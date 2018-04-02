@@ -25,6 +25,39 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+                            <label for="username" class="col-md-4 control-label">username</label>
+
+                            <div class="col-md-6">
+                                <input id="username" type="text" class="form-control" name="username" value="{{ old('username') }}" required autofocus>
+
+                                @if ($errors->has('username'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('username') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('user_type') ? ' has-error' : '' }}">
+                            <label for="user_type" class="col-md-4 control-label">user_type</label>
+
+                            <div class="col-md-6">
+            
+                                <select id="user_type" class="form-control" name="user_type" value="{{ old('user_type') }}" required autofocus>
+                                    <option value='admin'>administrador</option>
+                                    <option value='moderator'>moderador</option>
+                                    <option value='user' selected>usuario</option>
+                                </select>
+
+                                @if ($errors->has('user_type'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('user_type') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
