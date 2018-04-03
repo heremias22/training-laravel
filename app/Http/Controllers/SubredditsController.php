@@ -95,7 +95,14 @@ class SubredditsController extends Controller
      */
     public function update(Request $request, Subreddit $subreddit)
     {
-        //
+        $this->validate($request, [
+            'description' => 'required|min:6',
+        ]);
+
+        $subredditSearch = Subreddit::findOrFail($subreddit->id);
+        $subredditSearch->update($request->all()); 
+    
+        return redirect()->route("subreddits.index")->with("status","Subreddit Updated!");
     }
 
     /**

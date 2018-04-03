@@ -9,13 +9,13 @@
 
                 <div class="panel-body">
                    
-                    <form class="form-horizontal" method="POST" action="">
+                <form class="form-horizontal" method="POST" action="{{ route("subreddits.update", [$subredditShow->id]) }}">
                         {{ csrf_field() }}
                         @method("PUT")
                         <label for='name'>Subreddit name</label>
                         <div class='form-group'>
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" value="{{ $subredditShow->name }}" required autofocus disabled>
+                                <input id="name" type="text" class="form-control" name="name" value="{{ $subredditShow->name }}" disabled>
                             </div>
                         </div>
                         <label for='description'>Subreddit description</label>
@@ -32,7 +32,11 @@
                                     Update
                                 </button>
                                 <a href='#' type="button" class="btn btn-danger" 
-                                onclick="document.getElementById('deleteSubreddit').submit();">
+                                onclick="
+                                var accept = confirm('Do you wanna delete this subreddit?');
+                                if(accept){
+                                    document.getElementById('deleteSubreddit').submit();
+                                }">
                                     Delete
                                     </a>
                                 <a href='{{ route("subreddits.index") }}' type="button" class="btn btn-primary">
