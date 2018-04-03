@@ -52,18 +52,14 @@ class SubredditsController extends Controller
             'description' => 'required',
         ]);
 
-        $subreddit = new Subreddit;
-        $subreddit->fill(array(
+        $subreddit = Subreddit::create([
             'name' => $request->name, 
             'description' => $request->description,
             'creator_id' => Auth::id()
-        ));    
-        
-        if($subreddit->save()){
-            return redirect("subreddits/")->with("status","Subreddit created!");
-        } else {
-            return redirect("subreddits/")->with("status","There was an error creating a subreddit");
-        }
+        ]);    
+    
+        return redirect()->route("subreddits.index")->with("status","Subreddit created!");
+ 
     }
 
     /**
