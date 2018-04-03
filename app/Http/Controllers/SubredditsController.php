@@ -70,7 +70,9 @@ class SubredditsController extends Controller
      */
     public function show(Subreddit $subreddit)
     {
-        //
+        $subredditShow = Subreddit::findOrFail($subreddit->id);
+
+        return view("subreddit.show", compact("subredditShow"));
     }
 
     /**
@@ -104,6 +106,9 @@ class SubredditsController extends Controller
      */
     public function destroy(Subreddit $subreddit)
     {
-        //
+        $subredditBorrar = Subreddit::find($subreddit->id);    
+        if($subredditBorrar->delete()){
+            return redirect()->route("subreddits.index")->with("status","Subreddit borrado!");
+        }
     }
 }
