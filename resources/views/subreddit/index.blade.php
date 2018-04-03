@@ -19,6 +19,7 @@
                     <br>
                     <p>{{ $subreddit->description }}</p>
                 </div>
+                <hr>
             @endforeach
 
           

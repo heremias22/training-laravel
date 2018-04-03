@@ -70,20 +70,9 @@ class SubredditsController extends Controller
      */
     public function show(Subreddit $subreddit)
     {
-        $subredditShow = Subreddit::findOrFail($subreddit->id);
+        //$subredditShow = Subreddit::findOrFail($subreddit->id);
 
-        return view("subreddit.show", compact("subredditShow"));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Subreddit  $subreddit
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Subreddit $subreddit)
-    {
-        //
+        return view("subreddit.show", compact("subreddit"));
     }
 
     /**
@@ -99,8 +88,8 @@ class SubredditsController extends Controller
             'description' => 'required|min:6',
         ]);
 
-        $subredditSearch = Subreddit::findOrFail($subreddit->id);
-        $subredditSearch->update($request->all()); 
+        //$subredditSearch = Subreddit::findOrFail($subreddit->id);
+        $subreddit->update($request->all()); 
     
         return redirect()->route("subreddits.index")->with("status","Subreddit Updated!");
     }
@@ -113,9 +102,8 @@ class SubredditsController extends Controller
      */
     public function destroy(Subreddit $subreddit)
     {
-        $subredditBorrar = Subreddit::find($subreddit->id);    
-        if($subredditBorrar->delete()){
-            return redirect()->route("subreddits.index")->with("status","Subreddit borrado!");
-        }
+        //$subredditBorrar = Subreddit::findOrFail($subreddit->id);    
+        $subreddit->delete();
+        return redirect()->route("subreddits.index")->with("status","Subreddit borrado!");
     }
 }

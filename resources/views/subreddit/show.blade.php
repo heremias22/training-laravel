@@ -9,19 +9,19 @@
 
                 <div class="panel-body">
                    
-                <form class="form-horizontal" method="POST" action="{{ route("subreddits.update", [$subredditShow->id]) }}">
+                <form class="form-horizontal" method="POST" action="{{ route("subreddits.update", [$subreddit->id]) }}">
                         {{ csrf_field() }}
                         @method("PUT")
                         <label for='name'>Subreddit name</label>
                         <div class='form-group'>
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" value="{{ $subredditShow->name }}" disabled>
+                                <input id="name" type="text" class="form-control" name="name" value="{{ $subreddit->name }}" disabled>
                             </div>
                         </div>
                         <label for='description'>Subreddit description</label>
                         <div class='form-group'>
                             <div class="col-md-6">
-                                <textarea id="description" type="text" class="form-control" name="description" required autofocus>{{ $subredditShow->description }}
+                                <textarea id="description" type="text" class="form-control" name="description" required autofocus>{{ $subreddit->description }}
                                 </textarea>
                             </div>
                         </div>
@@ -45,10 +45,10 @@
                             </div>
                         </div>
                     </form>
-                    <form id='deleteSubreddit' method='post' action='{{ route("subreddits.destroy", [$subredditShow->id]) }}' style='display:none'>
+                    <form id='deleteSubreddit' method='post' action='{{ route("subreddits.destroy", [$subreddit->id]) }}' style='display:none'>
                             {{ csrf_field() }}
                             @method("DELETE")
-                        <input name='id' value='{{ $subredditShow->id }}' required>
+                        <input name='id' value='{{ $subreddit->id }}' required>
                     </form>
                 </div>
             </div>
