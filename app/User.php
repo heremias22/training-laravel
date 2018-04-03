@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use App\Subreddit;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -26,4 +27,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    //Un usuario puede tener varios subreddits pero un subreddit solo tiene un usuario.
+    public function subreddits()
+    {
+        return $this->hasMany(Subreddit::class,'creator_id');
+    }
 }
