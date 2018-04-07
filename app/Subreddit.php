@@ -12,7 +12,7 @@ class Subreddit extends Model
 
      /**
      * The attributes that are mass assignable.
-     *
+     *jola
      * @var array
      */
     protected $fillable = [
