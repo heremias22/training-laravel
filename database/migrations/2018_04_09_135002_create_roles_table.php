@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSubscriptionsTable extends Migration
+class CreateRolesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,16 @@ class CreateSubscriptionsTable extends Migration
      */
     public function up()
     {
-        Schema::table('subscriptions', function (Blueprint $table) {
+        Schema::table('roles', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer("user_id")->unsigned();
+            $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->integer("subreddit_id")->unsigned();
+            $table->integer('subreddit_id')->unsigned();
             $table->foreign('subreddit_id')->references('id')->on('subreddits');
-            $table->string('name');
-            $table->strinsubreddits('description');
+            $table->string('role_type');
             $table->softDeletes();
             $table->timestamps();
         });
-        
     }
 
     /**
@@ -34,8 +32,6 @@ class CreateSubscriptionsTable extends Migration
      */
     public function down()
     {
-        Schema::table('subscriptions', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('roles');
     }
 }
