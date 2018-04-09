@@ -19,6 +19,7 @@ Auth::routes();
 Route::post('subscribe', 'SubscriptionsController@subscribe')->name('subcribe.subreddit');
 Route::post('unsubscribe', 'SubscriptionsController@unsubscribe')->name('unsubcribe.subreddit');
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/profile/user/{user}', 'UsersController@getProfile')->name('user.profile');
 Route::get('/subreddits/r/{subreddit}', 'SubredditsController@main')->name('subreddit.main');
 Route::resource('/subreddits', 'SubredditsController');
 Route::get('posts/create/{id}', ['as' => 'post.create', 'uses' => 'PostsController@create']);
@@ -30,15 +31,3 @@ Route::resource('/comments', 'CommentsController')->except([
     'create'
 ]);
 Route::resource('/users', 'UsersController');
-
-/*
-Route::resource('/comments', 'CommentsController');
-
-Route::get('/subreddits', 'SubredditsController@index')->name('subreddits.index');
-Route::get('/subreddits/create', 'SubredditsController@create')->name('subreddits.create');
-Route::post('/subreddits/store', 'SubredditsController@store')->name('subreddits.store');
-Route::get('/subreddits/{subreddit}/}', 'SubredditsController@show')->name('subreddits.show');
-Route::get('/subreddits/{subreddit}/edit', 'SubredditsController@edit')->name('subreddits.edit');
-Route::put('/subreddits/{subreddit}', 'SubredditsController@update')->name('subreddits.update');
-Route::delete('/subreddits/{subreddit}', 'SubredditsController@destroy')->name('subreddits.destroy');
-*/

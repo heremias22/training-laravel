@@ -6,6 +6,13 @@ use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
+
+
+    public function getProfile(User $user){
+        return view("user.profile", compact("user"));
+    }
+
+
     /**
      * Display a listing of the resource.
      *

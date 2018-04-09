@@ -22,7 +22,7 @@
                     <div class="panel-body">
                         
                         Submitted <span>{{ $post->updated_at->diffForHumans()}}</span>
-                        by <a href='#'><span style='font-size:1.3em;'>{{ $post->user->username}}</span></a>
+                    by <a href='{{ route("user.profile",[$post->user]) }}'><span style='font-size:1.3em;'>{{ $post->user->username}}</span></a>
                     <a href='{{ route('posts.show',[$post->id])}}'><span class="badge badge-dark">{{ $post->comments->count() }}</span> Comments</a>
                     </div>
                  
