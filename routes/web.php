@@ -16,7 +16,8 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::post('subscribe', 'SubscriptionsController@subscribe')->name('suscribe.subreddit');
+Route::post('subscribe', 'SubscriptionsController@subscribe')->name('subcribe.subreddit');
+Route::post('unsubscribe', 'SubscriptionsController@unsubscribe')->name('unsubcribe.subreddit');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/subreddits/r/{subreddit}', 'SubredditsController@main')->name('subreddit.main');
 Route::resource('/subreddits', 'SubredditsController');

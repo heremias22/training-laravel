@@ -22,25 +22,30 @@ class SubscriptionsController extends Controller
     public function subscribe(){
 
         $id = Input::get('id');
+        $subscriptionExists = auth()->user()->subscriptions()->where("subreddit_id",$id)->first();
 
-        $subscriptionExists = Subscription::where("subreddit_id",$id)->where("user_id",auth()->user()->id)->get();
-
-        if($subscriptionExists){
-            //dd($subscriptionExists);
-            $subscriptionExists->delete();
-            return response()->json(['unsubscribed']);
-
-        } else {
-
+        if(!$subscriptionExists){
             $subscription = Subscription::create([
                 'user_id' => auth()->user()->id, 
                 'subreddit_id' => $id
             ]);  
-            
-            return response()->json(['subscribed']);
+        }
+        return response()->json([], 200);
+    
+    }
+
+    public function Unsubscribe(){
+
+        $id = Input::get('id');
+        
+        $subscribedToSubredit = auth()->user()->subscriptions()->where("subreddit_id",$id)->first();
+        if($subscribedToSubredit){
+            $subscribedToSubredit->delete();
         }
 
+        return response()->json([], 201);
       
+
     }
 
 

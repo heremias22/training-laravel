@@ -109,6 +109,7 @@ class SubredditsController extends Controller
     }
 
     public function main(Subreddit $subreddit){
+        
         return view("subreddit.main",compact("subreddit"));
     }
 

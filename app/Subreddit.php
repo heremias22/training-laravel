@@ -30,6 +30,11 @@ class Subreddit extends Model
         
     ];
 
+    // public function getRouteKeyName()
+    // {
+    //     return 'name';
+    // }
+
     /**
      * The attributes that should be mutated to dates.
      *
