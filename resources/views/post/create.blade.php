@@ -5,24 +5,26 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Create new SUBREDDIT</div>
+                <div class="panel-heading">Create new POST</div>
 
                 <div class="panel-body">
                    
-                    <form class="form-horizontal" method="POST" action="{{ route('subreddits.store') }}">
+                    <form class="form-horizontal" method="POST" action="{{ route('posts.store') }}">
                         {{ csrf_field() }}
-                        <label for='name'>Subreddit name</label>
+                        <label for='name'>Post name</label>
                         <div class='form-group'>
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
                             </div>
                         </div>
-                        <label for='description'>Subreddit description</label>
+                        <label for='body'>Post body</label>
                         <div class='form-group'>
                             <div class="col-md-6">
-                                <textarea id="description" type="text" class="form-control" name="description" value="{{ old('description') }}" required autofocus></textarea>
+                                <textarea id="body" type="text" class="form-control" name="body" value="{{ old('body') }}" required autofocus></textarea>
                             </div>
                         </div>
+
+                        <input id="subreddit_id" type="hidden" class="form-control" name="subreddit_id" value="{{ $id }}">
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">

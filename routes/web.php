@@ -16,10 +16,23 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
+Route::post('subscribe', 'SubscriptionsController@subscribe')->name('suscribe.subreddit');
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/subreddits/r/{subreddit}', 'SubredditsController@main')->name('subreddit.main');
 Route::resource('/subreddits', 'SubredditsController');
+Route::get('posts/create/{id}', ['as' => 'post.create', 'uses' => 'PostsController@create']);
+Route::get('comments/create/{id}', ['as' => 'comment.create', 'uses' => 'CommentController@create']);
+Route::resource('/posts', 'PostsController')->except([
+    'create'
+]);
+Route::resource('/comments', 'CommentsController')->except([
+    'create'
+]);
+Route::resource('/users', 'UsersController');
+
 /*
+Route::resource('/comments', 'CommentsController');
+
 Route::get('/subreddits', 'SubredditsController@index')->name('subreddits.index');
 Route::get('/subreddits/create', 'SubredditsController@create')->name('subreddits.create');
 Route::post('/subreddits/store', 'SubredditsController@store')->name('subreddits.store');

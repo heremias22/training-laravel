@@ -15,6 +15,9 @@
                     @endif
 
                     You are logged in!
+
+                    <a href='{{ route("subreddits.index") }}'>SUBREDDITS</a>
+
                 </div>
             </div>
         </div>

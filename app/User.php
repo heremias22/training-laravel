@@ -29,8 +29,39 @@ class User extends Authenticatable
     ];
 
     //Un usuario puede tener varios subreddits pero un subreddit solo tiene un usuario.
-    public function subreddits()
-    {
+    public function subreddits(){
         return $this->hasMany(Subreddit::class,'creator_id');
     }
+
+    //Un usuario puede subscribirse a varios subreddits
+    public function subscriptions(){
+        return $this->hasMany(Subscription::class,'user_id');
+    }
+    //Para saber si esta suscrito a un subreddit o no
+    public function isSubscribedTo(Subreddit $subreddit){
+        return (bool) $this->subscriptions->where('subreddit_id', $subreddit->id)->count();
+    }
+
+    //Un usuario puede hacer varios posts en un subreddit pero un post solo tiene un usuario
+    public function posts(){
+        return $this->hasMany(Post::class, 'creator_id');
+    }
+
+    //Un usuario puede hacer varios comentarios en un post de un subreddit pero un comentario solo tiene un usuario
+    public function comments(){
+        return $this->hasMany(Comment::class, 'creator_id');
+    }
+    
+    //Un usuario puede tener varios votos pero un usuario solo puede emitir uno en un comentario.
+        /*
+    //Para devolver los subreddits que se ha suscrito
+    public function subscribedSubreddits(){
+        return $this->belongsToMany(Subreddit::class,"subscriptions");
+     }
+
+    //Para saber si esta suscrito a un subreddit o no
+    public function ownsSubreddit(Subreddit $subreddit){
+        return (bool) $this->subreddits->where('id', $subreddit->id)->count();
+    }
+    */
 }

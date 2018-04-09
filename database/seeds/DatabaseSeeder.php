@@ -20,5 +20,11 @@ class DatabaseSeeder extends Seeder
             "email" => "usuario@usuario.com",
             "password" => bcrypt("usuario"),
             "user_type" => "admin"]);
+
+
+        Subreddit::create([
+            "creator_id" => 1,
+            "name" => "Games",
+            "description" => "A place to talk about videogames"]);
     }
 }

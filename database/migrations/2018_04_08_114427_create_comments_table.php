@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSubredditsTables extends Migration
+class CreateCommentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateSubredditsTables extends Migration
      */
     public function up()
     {
-        Schema::create('subreddits', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer("creator_id")->unsigned();
+            $table->integer('creator_id')->unsigned();
             $table->foreign('creator_id')->references('id')->on('users');
-            $table->string('name');
-            $table->string('description');
+            $table->integer('post_id')->unsigned();
+            $table->foreign('post_id')->references('id')->on('posts');
+            $table->string('body');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -31,6 +32,6 @@ class CreateSubredditsTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists("subreddits");
+        Schema::dropIfExists('comments');
     }
 }

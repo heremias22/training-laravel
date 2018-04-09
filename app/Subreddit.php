@@ -12,7 +12,9 @@ class Subreddit extends Model
 
      /**
      * The attributes that are mass assignable.
-     *jola
+     *
+     * PROBANDO
+     * 
      * @var array
      */
     protected $fillable = [
@@ -34,5 +36,13 @@ class Subreddit extends Model
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+    public function subscriptions(){
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function posts(){
+        return $this->hasMany(Post::class);
+    }
 
 }

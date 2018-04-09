@@ -18,6 +18,7 @@ class SubredditsController extends Controller
     {
         $this->middleware('auth');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +26,7 @@ class SubredditsController extends Controller
      */
     public function index()
     {
-        $subreddits = Subreddit::all();
+        $subreddits = Subreddit::orderBy("created_at","desc")->get();
         return view("subreddit.index",compact("subreddits"));
     }
 
@@ -106,4 +107,9 @@ class SubredditsController extends Controller
         $subreddit->delete();
         return redirect()->route("subreddits.index")->with("status","Subreddit borrado!");
     }
+
+    public function main(Subreddit $subreddit){
+        return view("subreddit.main",compact("subreddit"));
+    }
+
 }
