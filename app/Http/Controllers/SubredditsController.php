@@ -113,4 +113,6 @@ class SubredditsController extends Controller
         return view("subreddit.main",compact("subreddit"));
     }
 
+    
+
 }

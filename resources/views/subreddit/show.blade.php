@@ -27,7 +27,7 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
+                            
                                 <button type="submit" class="btn btn-success">
                                     Update
                                 </button>
@@ -42,7 +42,9 @@
                                 <a href='{{ route("subreddits.index") }}' type="button" class="btn btn-primary">
                                     Go Back
                                 </a>
-                            </div>
+
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addmods">Manage mods</button>
+                            
                         </div>
                     </form>
                     <form id='deleteSubreddit' method='post' action='{{ route("subreddits.destroy", [$subreddit->id]) }}' style='display:none'>
@@ -55,4 +57,34 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="addmods" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Add user to mod</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class='form-group'>
+                <div class="input-group" style='margin:0 auto; display:block;'>
+                    <input type="text" class="form-control" placeholder="Search user...">
+                </div>
+            </div>
+            <hr>
+            <div class="modal-body">
+                <ul>
+             @foreach($subreddit->subscriptions as $subscribed)
+                    <li><a href='#'>{{ $subscribed->user->name }}</a></li>
+             @endforeach
+                </ul>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
 @endsection

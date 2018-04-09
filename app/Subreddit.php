@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\SubredditModerator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -48,6 +49,10 @@ class Subreddit extends Model
 
     public function posts(){
         return $this->hasMany(Post::class);
+    }
+
+    public function moderators(){
+        return $this->hasMany(User::class,"");
     }
 
 }

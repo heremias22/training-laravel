@@ -64,12 +64,18 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'username' => $data['username'],
             'user_type' => $data['user_type'],
             'password' => bcrypt($data['password']),
         ]);
+
+        //Afer creating the user send him an email
+        event(new UserRegistered($user));
+            
+        return redirect("/home");
     }
 }

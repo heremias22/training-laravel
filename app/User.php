@@ -52,16 +52,10 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class, 'creator_id');
     }
 
-    //Listing all the roles this user has
-    public function roles(){
-        return $this->belongsToMany(Role::class,"user_id");
+    public function moderadedSubreddits(){
+        return $this->hasMany(Subreddit::class);
     }
-
-    //Know the roles the user has in this subreddit
-    public function userRolesInThisSubreddit(Subreddit $subreddit){
-        return (bool) $this->roles->where('subreddit_id', $subreddit->id);
-    }
-
+  
     
     //Un usuario puede tener varios votos pero un usuario solo puede emitir uno en un comentario.
         /*
