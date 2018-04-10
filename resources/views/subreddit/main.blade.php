@@ -38,7 +38,11 @@
                     <span id='sub-count'>{{ $subreddit->subscriptions->count() }}</span> subscribed
                     <button data-id='{{ $subreddit->id }}' data-url='{{ URL::route('unsubcribe.subreddit') }}' onclick='unsubscribeSubreddit(this);' class='btn-xs btn-danger' >subscribe</button>
                     <hr>
-                    
+                    <ul>Moderators
+                    @foreach($subreddit->moderators as $mod)
+                    <li>{{ $mod->username }}</li>    
+                    @endforeach
+                    </ul>
                     <ul>
                         <li>1#Rule</li>
                         <li>2#Rule</li>

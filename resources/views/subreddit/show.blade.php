@@ -75,9 +75,19 @@
             </div>
             <hr>
             <div class="modal-body">
-                <ul>
+                    
+                <ul style='list-style-type: none;'>
              @foreach($subreddit->subscriptions as $subscribed)
-                    <li><a href='#'>{{ $subscribed->user->name }}</a></li>
+                <li>
+                    <span class='text-danger' style='font-weight:bold;'>{{ $subscribed->user->name }}</span>
+                    @if($subscribed->user->moderadedSubreddits()->where("user_id",$subscribed->user->id)->where("subreddit_id",$subreddit->id)->first())
+                        <a href='{{ route("removeModerator.subreddit",[$subscribed->user,$subreddit]) }}' class='btn-xs btn-danger'>remove mod</a>
+                    @else
+                        <a href='{{ route("addModerator.subreddit",[$subscribed->user,$subreddit]) }}' class='btn-xs btn-success'>request mod</a>
+                    @endif
+                    
+                    
+                </li>
              @endforeach
                 </ul>
             </div>

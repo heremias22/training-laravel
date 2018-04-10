@@ -53,7 +53,7 @@ class User extends Authenticatable
     }
 
     public function moderadedSubreddits(){
-        return $this->belongsToMany(Subreddit::class)->withTimestamps();;
+        return $this->belongsToMany(Subreddit::class)->withTimestamps();
     }
   
     

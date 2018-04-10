@@ -18,15 +18,15 @@ class UsersController extends Controller
         return view("user.show", compact("user"));
     }
 
-    public function addModeratorToSubreddit(User $user,Subreddit $subreddit){
-       //dd($user->id,$subreddit->id);
+    public function addModeratorToSubreddit(User $user, Subreddit $subreddit){
         $user->moderadedSubreddits()->attach($subreddit->id);    
         return redirect()->route("subreddits.index")->with("status","New mod ADDED!");
 
     }
 
-    public function removeModeratorFromSubreddit(){
-
+    public function removeModeratorFromSubreddit(User $user, Subreddit $subreddit){
+        $user->moderadedSubreddits()->detach($subreddit->id);    
+        return redirect()->route("subreddits.index")->with("status","mod REMOVED!");
     }
 
 }
