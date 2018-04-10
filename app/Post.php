@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -42,5 +43,17 @@ class Post extends Model
 
     public function user(){
         return $this->belongsTo(User::class,"creator_id");
+    }
+
+    public function subreddit(){
+        return $this->belongsTo(Subreddit::class,"subreddit_id");
+    }
+
+    public function isOwner(User $user){
+        if($this->user->id === $user->id){
+            return True;
+        } else {
+            return false;
+        }
     }
 }

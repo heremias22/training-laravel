@@ -18,15 +18,7 @@ class CommentsController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -60,17 +52,6 @@ class CommentsController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Comment $comment)
-    {
-        return view("comment.show");
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Comment  $comment
@@ -78,7 +59,7 @@ class CommentsController extends Controller
      */
     public function edit(Comment $comment)
     {
-        //
+        return view("comment.edit", compact("comment"));
     }
 
     /**
@@ -90,7 +71,14 @@ class CommentsController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        //
+        $this->validate($request, [
+            'body' => 'required|min:3',
+        ]);
+
+        //$subredditSearch = Subreddit::findOrFail($subreddit->id);
+        $comment->update($request->all()); 
+    
+        return redirect()->route("posts.show", [$comment->post()])->with("status","Comentario Actualizado!");
     }
 
     /**
@@ -101,6 +89,7 @@ class CommentsController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        $comment->delete();
+        return redirect()->route("posts.show",[$comment->post])->with("status","Comentario Borrado!");
     }
 }

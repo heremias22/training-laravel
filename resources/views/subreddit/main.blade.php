@@ -31,7 +31,9 @@
             </div>
             <div class="col-md-2" style='border:1px solid black'>
                     <hr>
-                    <a class='btn-sm btn-info' href='#'>Subreddit options</a>
+                    @if($subreddit->user->id===auth()->user()->id)
+                        <a class='btn-sm btn-info' href='{{ route("subreddits.show",[$subreddit->id])}}'>Subreddit options</a>
+                    @endif
                     <hr>
                     <a class='btn-sm btn-danger' href='{{ route("post.create",['id' => $subreddit->id]) }}'>Submit Post</a>
                     <hr>

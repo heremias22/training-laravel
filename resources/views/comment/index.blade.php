@@ -9,6 +9,16 @@
                         Submitted <span>{{ $comment->created_at->diffForHumans()}}</span>
                         by <a href='#'><span>{{ $comment->user->username}}</span></a>
                         </p>
+                        @if($comment->isOwner(auth()->user()))
+                            <a href='{{ route("comments.edit",[$comment]) }}' class='btn-xs btn-primary'>Edit</a>
+                            <a href='#' onclick="var accept = confirm('Do you wanna delete this comment?');
+                                if(accept)document.getElementById('deleteComment').submit();" 
+                                class='btn-xs btn-danger'>Delete</a>
+                            <form id='deleteComment' method='post' action='{{ route("comments.destroy",[$comment]) }}' style='display:none'>
+                                {{ csrf_field() }}
+                                @method("DELETE")
+                             </form>
+                        @endif
                     </div>
                     @endforeach
             </div>

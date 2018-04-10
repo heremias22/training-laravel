@@ -16,6 +16,10 @@
                         <a href='{{ route('posts.show',[$post->id])}}'><span class="badge badge-dark">{{ $post->comments->count() }}</span> Comments</a>
                         <hr>
                         <p style='font-size:1.3em; border:solid 1px grey; padding:8px; border-radius:5px;'>{{ $post->body }}</p>
+                        @if($post->isOwner(auth()->user()))
+                        <button class='btn-xs btn-primary'>Delete</button>
+                        <button class='btn-xs btn-danger'>Edit</button>
+                        @endif
                     </div>
             </div>
             <hr>

@@ -25,7 +25,9 @@ Route::delete('/subreddits/{subreddit}/moderators/{user}', 'SubredditModeratorsC
 
 Route::post('subscribe', 'SubscriptionsController@subscribe')->name('subcribe.subreddit');
 Route::post('unsubscribe', 'SubscriptionsController@unsubscribe')->name('unsubcribe.subreddit');
+
 Route::get('/home', 'HomeController@index')->name('home');
+
 Route::get('/profile/user/{user}', 'UsersController@getProfile')->name('user.profile');
 Route::get('/subreddits/r/{subreddit}', 'SubredditsController@main')->name('subreddit.main');
 Route::resource('/subreddits', 'SubredditsController');
@@ -35,6 +37,6 @@ Route::resource('/posts', 'PostsController')->except([
     'create'
 ]);
 Route::resource('/comments', 'CommentsController')->except([
-    'create'
+    'create','show'
 ]);
 Route::resource('/users', 'UsersController');

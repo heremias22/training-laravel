@@ -45,4 +45,8 @@ class Comment extends Model
    public function user(){
        return $this->belongsTo(User::class,"creator_id");
    }
+
+   public function isOwner(User $user){
+       return ($this->user->id==$user->id);
+   }
 }
