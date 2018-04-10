@@ -16,8 +16,13 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::get('/addModerator/{user}/{subreddit}', 'UsersController@addModeratorToSubreddit')->name('addModerator.subreddit');
-Route::get('/removeModerator/{user}/{subreddit}', 'UsersController@removeModeratorFromSubreddit')->name('removeModerator.subreddit');
+
+Route::post('/subreddits/{subreddit}/moderators', 'SubredditModeratorsController@store')
+    ->name('subreddit.add-moderator');
+Route::delete('/subreddits/{subreddit}/moderators/{user}', 'SubredditModeratorsController@destroy')
+    ->name('subreddit.remove-moderator');
+
+
 Route::post('subscribe', 'SubscriptionsController@subscribe')->name('subcribe.subreddit');
 Route::post('unsubscribe', 'SubscriptionsController@unsubscribe')->name('unsubcribe.subreddit');
 Route::get('/home', 'HomeController@index')->name('home');

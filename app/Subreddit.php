@@ -59,4 +59,13 @@ class Subreddit extends Model
         return $this->belongsToMany(User::class)->withTimestamps();;
     }
 
+
+    public function addModerator($user_id){
+        return $this->moderators()->attach($user_id);    
+    }
+
+    public function removeModerator($user_id){
+        return $this->moderators()->detach($user_id);    
+    }
+
 }
