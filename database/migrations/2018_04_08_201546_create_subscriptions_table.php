@@ -6,6 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateSubscriptionsTable extends Migration
 {
+    public $table = "subscriptions";
     /**
      * Run the migrations.
      *

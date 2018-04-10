@@ -19,7 +19,7 @@ class Subreddit extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'creator_id'
+        'name', 'description', 'creator_id','user_id'
     ];
 
     /**
@@ -51,8 +51,12 @@ class Subreddit extends Model
         return $this->hasMany(Post::class);
     }
 
+    public function user(){
+        return $this->belongsTo(User::class,"creator_id");
+    }
+
     public function moderators(){
-        return $this->hasMany(User::class,"");
+        return $this->belongsToMany(User::class)->withTimestamps();;
     }
 
 }

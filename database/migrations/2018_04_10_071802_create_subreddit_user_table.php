@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSubredditsModeratorsTable extends Migration
+class CreateSubredditUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateSubredditsModeratorsTable extends Migration
      */
     public function up()
     {
-        Schema::table('subreddits_moderators', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('subreddit_user', function (Blueprint $table) {
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('subreddit_id')->unsigned();
             $table->foreign('subreddit_id')->references('id')->on('subreddits');
-            $table->softDeletes();
+            $table->primary(["user_id","subreddit_id"]);
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ class CreateSubredditsModeratorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subreddits_moderators');
+        Schema::dropIfExists('subreddit_user');
     }
 }
