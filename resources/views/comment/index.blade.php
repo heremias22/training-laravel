@@ -10,6 +10,7 @@
                         by <a href='#'><span>{{ $comment->user->username}}</span></a>
                         </p>
                             <a href='#' class='btn-xs btn-danger'>Reply</a>
+                            <a href='{{ route("prueba.comment") }}'> PRUEBA</a>
                         @if($comment->isOwner(auth()->user()))
                             <a href='{{ route("comments.edit",[$comment]) }}' class='btn-xs btn-primary'>Edit</a>
                             <a href='#' onclick="var accept = confirm('Do you wanna delete this comment?');

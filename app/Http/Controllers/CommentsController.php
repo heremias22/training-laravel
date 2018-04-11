@@ -92,4 +92,5 @@ class CommentsController extends Controller
         $comment->delete();
         return redirect()->route("posts.show",[$comment->post])->with("status","Comentario Borrado!");
     }
+
 }

@@ -23,8 +23,19 @@
                             Submitted <span>{{ $post->updated_at->diffForHumans()}}</span>
                         by <a href='{{ route("user.profile",[$post->user]) }}'><span style='font-size:1.3em;'>{{ $post->user->username}}</span></a>
                         <a href='{{ route('posts.show',[$post->id])}}'><span class="badge badge-dark">{{ $post->comments->count() }}</span> Comments</a>
+                            <div class='pull-right'>
+                            Count <span class='points_count'>{{ $post->getPoints() }}</span>
+                                <a href="#" data-type='up' data-id='{{ $post->id }}' onclick="votePost(this);" class='btn-xs btn-primary'>Upvote</a>
+                                <a href="#" data-type='down' data-id='{{ $post->id }}' onclick="votePost(this);" class='btn-xs btn-danger'>Downvote</a>
+                                <a href='#' onclick="formManual(this);">downVote manual</a>
+                                <form id='manual{{$post->id}}' method="post" action="{{ route("vote.post")  }}">
+                                        @csrf
+                                    <input type="hidden" name='id' value='{{ $post->id }}'>
+                                    <input type="hidden" name='type' value='down'>
+                                    </form>
+                            </div>
                         </div>
-                    
+                  
                     </div>
                     <hr>
                 @endforeach
@@ -62,4 +73,33 @@
         </div>
     </div>
 </div>
+<script>
+
+    function formManual(elemento){
+        var prueba = $(elemento).next().attr("id");
+        document.getElementById(prueba).submit();
+    }
+
+function votePost(elemento){
+
+    var url ="{{ route('vote.post') }}";
+    var type = $(elemento).attr("data-type");
+    var post = $(elemento).attr("data-id");
+    //$(elemento).attr('disabled', true);
+
+    $.ajax({
+        dataType: 'json',
+        type:'post',
+        url: url,
+        data:{id:post,type:type},
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+    }).done(function(data) {
+       
+        $(elemento).parent().find("span").text(data.points);
+    });
+    }
+
+</script>
 @endsection

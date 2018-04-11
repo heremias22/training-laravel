@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class PostsController extends Controller
 {
@@ -104,8 +106,27 @@ class PostsController extends Controller
         $post->delete();
         return redirect()->route("subreddit.main",[$post->subreddit])->with("status","Post Borrado!");
     }
+    
+    public function vote(Request $request){
 
-    public function getVotes(){
-        //check users votes
+        $id = Input::get('id');
+        $type = Input::get("type");
+        $post = Post::where("id",$id)->first();
+       
+
+        if($post->vote($type)){
+            return response()->json([
+                'status' => 'success',
+                'points' => $post->getPoints(),
+            ], 201);
+        } else{
+            return response()->json([
+                'status' => 'fail'
+            ], 404);
+        }
+
+      
     }
+        
 }
+

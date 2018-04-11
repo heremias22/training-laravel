@@ -35,12 +35,13 @@ class Comment extends Model
     * @var array
     */
    protected $dates = ['deleted_at'];
-
+   /*
    public function commentable(){
        return $this->morphTo();
    }
+   */
 
-   //BelongsTo post?
+   
    public function post(){
        return $this->belongsTo(Post::class,"post_id");
    }
