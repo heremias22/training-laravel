@@ -104,4 +104,8 @@ class PostsController extends Controller
         $post->delete();
         return redirect()->route("subreddit.main",[$post->subreddit])->with("status","Post Borrado!");
     }
+
+    public function getVotes(){
+        //check users votes
+    }
 }

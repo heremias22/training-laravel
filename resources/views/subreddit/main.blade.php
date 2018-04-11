@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="fluid-container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-9 col-md-offset-1">
 
                 @if (session('status'))
                 <div class="alert alert-success">
@@ -38,19 +38,24 @@
                     <a class='btn-sm btn-danger' href='{{ route("post.create",['id' => $subreddit->id]) }}'>Submit Post</a>
                     <hr>
                     <span id='sub-count'>{{ $subreddit->subscriptions->count() }}</span> subscribed
-                    <button data-id='{{ $subreddit->id }}' data-url='{{ URL::route('unsubcribe.subreddit') }}' onclick='unsubscribeSubreddit(this);' class='btn-xs btn-danger' >subscribe</button>
+                    @if(auth()->user()->isSubscribedTo($subreddit))
+                        <button data-id='{{ $subreddit->id }}' data-url='{{ URL::route('unsubcribe.subreddit') }}' onclick='unsubscribeSubreddit(this);' class='btn-sm btn-info' >Unsubscribe</button>
+                    @else
+                        <button data-id='{{ $subreddit->id }}' data-url='{{ URL::route('subcribe.subreddit') }}' onclick='subcribeSubreddit(this);' class='btn-sm btn-info' >Subscribe</button>
+                    @endif
                     <hr>
-                    <ul>Moderators
+                    <p>{{ $subreddit->description }}</p>
+                    <ul class="list-group">Moderators
                     @foreach($subreddit->moderators as $mod)
-                    <li>{{ $mod->username }}</li>    
+                    <li class="list-group-item list-group-item-danger">{{ $mod->username }}</li>    
                     @endforeach
                     </ul>
-                    <ul>
-                        <li>1#Rule</li>
-                        <li>2#Rule</li>
-                        <li>3#Rule</li>
-                        <li>4#Rule</li>
-                        <li>5#Rule</li>
+                    <ul class="list-group">Rules
+                        <li class="list-group-item list-group-item-warning" >1#Rule</li>
+                        <li class="list-group-item list-group-item-warning">2#Rule</li>
+                        <li class="list-group-item list-group-item-warning">3#Rule</li>
+                        <li class="list-group-item list-group-item-warning">4#Rule</li>
+                        <li class="list-group-item list-group-item-warning">5#Rule</li>
                     </ul>
             </div>
 

@@ -56,4 +56,22 @@ class Post extends Model
             return false;
         }
     }
+
+    public function votes(){
+        return $this->morphMany(Vote::class, "voteable");
+    }
+
+    public function upVote(){
+        return $this->votes->where('type',"up");
+    }
+
+    public function downVote(){
+        return $this->votes->where('type',"down");
+    }
+
+    public function voteFromUser(User $user){
+        return $this->votes()->where("user_id",$user->id);
+
+    }
+
 }

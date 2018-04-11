@@ -36,6 +36,9 @@ class Comment extends Model
     */
    protected $dates = ['deleted_at'];
 
+   public function commentable(){
+       return $this->morphTo();
+   }
 
    //BelongsTo post?
    public function post(){
