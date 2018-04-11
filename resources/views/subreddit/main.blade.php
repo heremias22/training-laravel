@@ -27,12 +27,6 @@
                             Count <span class='points_count'>{{ $post->getPoints() }}</span>
                                 <a href="#" data-type='up' data-id='{{ $post->id }}' onclick="votePost(this);" class='btn-xs btn-primary'>Upvote</a>
                                 <a href="#" data-type='down' data-id='{{ $post->id }}' onclick="votePost(this);" class='btn-xs btn-danger'>Downvote</a>
-                                <a href='#' onclick="formManual(this);">downVote manual</a>
-                                <form id='manual{{$post->id}}' method="post" action="{{ route("vote.post")  }}">
-                                        @csrf
-                                    <input type="hidden" name='id' value='{{ $post->id }}'>
-                                    <input type="hidden" name='type' value='down'>
-                                    </form>
                             </div>
                         </div>
                   
@@ -75,10 +69,6 @@
 </div>
 <script>
 
-    function formManual(elemento){
-        var prueba = $(elemento).next().attr("id");
-        document.getElementById(prueba).submit();
-    }
 
 function votePost(elemento){
 

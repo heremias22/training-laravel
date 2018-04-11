@@ -124,8 +124,6 @@ class PostsController extends Controller
                 'status' => 'fail'
             ], 404);
         }
-
-      
     }
         
 }

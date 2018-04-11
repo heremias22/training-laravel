@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class CommentsController extends Controller
 {
@@ -91,6 +92,26 @@ class CommentsController extends Controller
     {
         $comment->delete();
         return redirect()->route("posts.show",[$comment->post])->with("status","Comentario Borrado!");
+    }
+
+
+    public function vote(Request $request){
+
+        $id = Input::get('id');
+        $type = Input::get("type");
+        $comment = Comment::where("id",$id)->first();
+       
+
+        if($comment->vote($type)){
+            return response()->json([
+                'status' => 'success',
+                'points' => $comment->getPoints(),
+            ], 201);
+        } else{
+            return response()->json([
+                'status' => 'fail'
+            ], 404);
+        }
     }
 
 }
