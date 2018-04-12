@@ -22,19 +22,24 @@ Route::post('/subreddits/{subreddit}/moderators', 'SubredditModeratorsController
 Route::delete('/subreddits/{subreddit}/moderators/{user}', 'SubredditModeratorsController@destroy')
     ->name('subreddit.remove-moderator');
 
+Route::post('/subreddits/post/vote', 'PostsController@vote')->name('vote.post');
+//Route::post('downvote', 'PostsController@vote')->name('downvote.post');
 
 Route::post('subscribe', 'SubscriptionsController@subscribe')->name('subcribe.subreddit');
 Route::post('unsubscribe', 'SubscriptionsController@unsubscribe')->name('unsubcribe.subreddit');
+
 Route::get('/home', 'HomeController@index')->name('home');
+
 Route::get('/profile/user/{user}', 'UsersController@getProfile')->name('user.profile');
 Route::get('/subreddits/r/{subreddit}', 'SubredditsController@main')->name('subreddit.main');
 Route::resource('/subreddits', 'SubredditsController');
 Route::get('posts/create/{id}', ['as' => 'post.create', 'uses' => 'PostsController@create']);
+Route::post('/subreddits/comment/vote', 'CommentsController@vote')->name('vote.comment');
 Route::get('comments/create/{id}', ['as' => 'comment.create', 'uses' => 'CommentController@create']);
 Route::resource('/posts', 'PostsController')->except([
     'create'
 ]);
 Route::resource('/comments', 'CommentsController')->except([
-    'create'
+    'create','show'
 ]);
 Route::resource('/users', 'UsersController');

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -37,60 +37,60 @@
     </div>
 </div>
     <script type="text/javascript">
+    
+    function subcribeSubreddit(elemento){
 
-        function subcribeSubreddit(elemento){
 
-            //if already subscribed dont do anything
 
-            var url = $(elemento).attr("data-url");
-            var subreddit_id = $(elemento).attr("data-id");
-            $(elemento).attr('disabled', true);
+var url = $(elemento).attr("data-url");
+var subreddit_id = $(elemento).attr("data-id");
+$(elemento).attr('disabled', true);
 
-            $.ajax({
-                dataType: 'json',
-                type:'post',
-                url: url,
-                data:{id:subreddit_id},
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-            }).done(function(data) {
-               
-                    $(elemento).text("unsubcribe");
-                    $(elemento).attr("data-url","{{ URL::route('unsubcribe.subreddit') }}");
-                    var numero = parseInt($("#sub-count").text())+1;
-                    $("#sub-count").text(numero);
-                    $(elemento).attr("onClick","unsubscribeSubreddit(this)");
-                    $(elemento).attr('disabled', false);
-            });
-        }
+$.ajax({
+    dataType: 'json',
+    type:'post',
+    url: url,
+    data:{id:subreddit_id},
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+}).done(function(data) {
+   
+        $(elemento).text("unsubcribe");
+        $(elemento).attr("data-url","{{ URL::route('unsubcribe.subreddit') }}");
+        var numero = parseInt($("#sub-count").text())+1;
+        $("#sub-count").text(numero);
+        $(elemento).attr("onClick","unsubscribeSubreddit(this)");
+        $(elemento).attr('disabled', false);
+});
+}
 
-        function unsubscribeSubreddit(elemento){
-            var url = $(elemento).attr("data-url");
-            var subreddit_id = $(elemento).attr("data-id");
-            $(elemento).attr('disabled', true);
+function unsubscribeSubreddit(elemento){
+var url = $(elemento).attr("data-url");
+var subreddit_id = $(elemento).attr("data-id");
+$(elemento).attr('disabled', true);
 
-            $.ajax({
-                dataType: 'json',
-                type:'post',
-                url: url,
-                data:{id:subreddit_id},
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-            }).done(function(data) {
-            
-                    $(elemento).text("subcribe");
-                    $(elemento).attr("data-url","{{ URL::route('subcribe.subreddit') }}");
-                    var numero = parseInt($("#sub-count").text())-1;
-                    $("#sub-count").text(numero);
-                    $(elemento).attr("onClick","subcribeSubreddit(this)");
-                    $(elemento).attr('disabled', false);    
-            }).fail(function(data) {
-                alert('failed!');
-            });
-        }
-        
+$.ajax({
+    dataType: 'json',
+    type:'post',
+    url: url,
+    data:{id:subreddit_id},
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+}).done(function(data) {
 
+        $(elemento).text("subcribe");
+        $(elemento).attr("data-url","{{ URL::route('subcribe.subreddit') }}");
+        var numero = parseInt($("#sub-count").text())-1;
+        $("#sub-count").text(numero);
+        $(elemento).attr("onClick","subcribeSubreddit(this)");
+        $(elemento).attr('disabled', false);    
+}).fail(function(data) {
+    alert('failed!');
+});
+}
+    
+    
     </script>
 @endsection

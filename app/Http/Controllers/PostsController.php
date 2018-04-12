@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class PostsController extends Controller
 {
@@ -17,15 +19,6 @@ class PostsController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -80,7 +73,7 @@ class PostsController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view("post.edit",compact("post"));
     }
 
     /**
@@ -92,7 +85,14 @@ class PostsController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $this->validate($request, [
+            'body' => 'required|min:3',
+        ]);
+
+        //$subredditSearch = Subreddit::findOrFail($subreddit->id);
+        $comment->update($request->all()); 
+    
+        return redirect()->route("posts.show", [$post])->with("status","Post Actualizado!");
     }
 
     /**
@@ -103,6 +103,28 @@ class PostsController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return redirect()->route("subreddit.main",[$post->subreddit])->with("status","Post Borrado!");
     }
+    
+    public function vote(Request $request){
+
+        $id = Input::get('id');
+        $type = Input::get("type");
+        $post = Post::where("id",$id)->first();
+       
+
+        if($post->vote($type)){
+            return response()->json([
+                'status' => 'success',
+                'points' => $post->getPoints(),
+            ], 201);
+        } else{
+            return response()->json([
+                'status' => 'fail'
+            ], 404);
+        }
+    }
+        
 }
+

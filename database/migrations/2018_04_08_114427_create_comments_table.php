@@ -17,9 +17,14 @@ class CreateCommentsTable extends Migration
             $table->increments('id');
             $table->integer('creator_id')->unsigned();
             $table->foreign('creator_id')->references('id')->on('users');
-            $table->integer('post_id')->unsigned();
-            $table->foreign('post_id')->references('id')->on('posts');
-            $table->string('body');
+            $table->integer("parent_id")->unsigned()->nullable();
+            //$table->integer('post_id')->unsigned();
+            //$table->foreign('post_id')->references('id')->on('posts');
+            $table->text('body');
+            $table->integer("commentable_id");
+            $table->string("commentable_type");
+            
+
             $table->softDeletes();
             $table->timestamps();
         });

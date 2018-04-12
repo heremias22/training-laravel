@@ -68,11 +68,7 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class='form-group'>
-                <div class="input-group" style='margin:0 auto; display:block;'>
-                    <input type="text" class="form-control" placeholder="Search user...">
-                </div>
-            </div>
+           
             <hr>
             <div class="modal-body">
                     
