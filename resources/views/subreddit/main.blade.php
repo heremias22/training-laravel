@@ -24,9 +24,9 @@
                         by <a href='{{ route("user.profile",[$post->user]) }}'><span style='font-size:1.3em;'>{{ $post->user->username}}</span></a>
                         <a href='{{ route('posts.show',[$post->id])}}'><span class="badge badge-dark">{{ $post->comments->count() }}</span> Comments</a>
                             <div class='pull-right'>
-                            Count <span class='points_count'>{{ $post->getPoints() }}</span>
-                                <a href="#" data-type='up' data-id='{{ $post->id }}' onclick="votePost(this);" class='btn-xs btn-primary'>Upvote</a>
-                                <a href="#" data-type='down' data-id='{{ $post->id }}' onclick="votePost(this);" class='btn-xs btn-danger'>Downvote</a>
+                            Points <span class='points_count badge'>{{ $post->getPoints() }}</span>
+                                <a href="#" data-type='up' data-id='{{ $post->id }}' onclick="votePost(this);" class='btn-xs btn-primary'>Up</a>
+                                <a href="#" data-type='down' data-id='{{ $post->id }}' onclick="votePost(this);" class='btn-xs btn-danger'>Down</a>
                             </div>
                         </div>
                   
@@ -89,7 +89,7 @@ function votePost(elemento){
        
         $(elemento).parent().find("span").text(data.points);
     });
-    }
+}
 
 </script>
 @endsection

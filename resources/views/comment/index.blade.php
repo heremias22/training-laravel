@@ -1,6 +1,5 @@
 
     <div class="row">
-            <div style='text-align:left; margin-left:5px;'>Comments</div>
             <div class="panel panel-default">
                     @foreach($post->comments as $comment)
                     <div class='panel-body' style='border-top:1px solid black;'>
@@ -22,9 +21,9 @@
                         @endif
 
                         <div class='pull-right'>
-                                Count <span class='points_count'>{{ $comment->getPoints() }}</span>
-                                    <a href="#" data-type='up' data-id='{{ $comment->id }}' onclick="voteComment(this);" class='btn-xs btn-primary'>Upvote</a>
-                                    <a href="#" data-type='down' data-id='{{ $comment->id }}' onclick="voteComment(this);" class='btn-xs btn-danger'>Downvote</a>
+                                Points <span class='points_count badge'>{{ $comment->getPoints() }}</span>
+                                    <a href="#" data-type='up' data-id='{{ $comment->id }}' onclick="voteComment(this);" class='btn-xs btn-primary'>Up</a>
+                                    <a href="#" data-type='down' data-id='{{ $comment->id }}' onclick="voteComment(this);" class='btn-xs btn-danger'>Down</a>
                         </div>     
 
                     </div>

@@ -1,10 +1,10 @@
 
     <div class="row">
-            <div style='text-align:left;  margin-left:5px;'> new Comment</div>
-            <div class="panel panel-default">
+            <div class="panel panel-primary">
+                <div class='panel-heading'>Reply to post</div>
                 <div class="panel-body">
                    
-                    <form class="form-horizontal" method="POST" action="{{ route('comments.store') }}">
+                    <form class method="POST" action="{{ route('comments.store') }}">
                         {{ csrf_field() }}
     
                         <label for='body'>Body</label>

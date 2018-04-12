@@ -37,11 +37,19 @@ class Comment extends Model
    protected $dates = ['deleted_at'];
    
    
-   
+   public function commentable(){
+    return $this->morphTo();
+}
+
+   public function comments(){
+       return $this->morphMany("App\Comment", "commentable");
+   }
+
+   /*
    public function post(){
        return $this->belongsTo(Post::class,"post_id");
    }
-
+    */
    public function user(){
        return $this->belongsTo(User::class,"creator_id");
    }

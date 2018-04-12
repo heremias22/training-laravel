@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Post;
 use App\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\Input;
 class CommentsController extends Controller
 {
 
-       /**
+    /**
      * Create a new controller instance.
      *
      * @return void
@@ -18,8 +19,6 @@ class CommentsController extends Controller
     {
         $this->middleware('auth');
     }
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -37,19 +36,30 @@ class CommentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Comment $comment)
+    public function store(Request $request)
     {
+        $id = Input::get('post_id');
+        $post = Post::find($id);
+
         $this->validate($request, [
-            'body' => 'required'
+            'body' => 'required',
         ]);
 
-        $comment = Comment::create([ 
-            'body' => $request->body,
-            'creator_id' => Auth()->user()->id,
-            'post_id' => $request->post_id
-        ]);    
-    
-        return redirect()->back()->with("status","Comment created!");
+        $comment = new Comment();
+        $comment->body = $request->body;
+        $comment->creator_id = auth()->user()->id;
+        $post->comments()->save($comment);
+        //$this->votes()->save($vote);
+
+        /*
+        $comment = Comment::create([
+        'body' => $request->body,
+        'creator_id' => Auth()->user()->id,
+        'post_id' => $request->post_id
+        ]);
+         */
+
+        return redirect()->back()->with("status", "Comment created!");
     }
 
     /**
@@ -77,9 +87,9 @@ class CommentsController extends Controller
         ]);
 
         //$subredditSearch = Subreddit::findOrFail($subreddit->id);
-        $comment->update($request->all()); 
-    
-        return redirect()->route("posts.show", [$comment->post()])->with("status","Comentario Actualizado!");
+        $comment->update($request->all());
+
+        return redirect()->route("posts.show", [$comment->post()])->with("status", "Comentario Actualizado!");
     }
 
     /**
@@ -91,25 +101,24 @@ class CommentsController extends Controller
     public function destroy(Comment $comment)
     {
         $comment->delete();
-        return redirect()->route("posts.show",[$comment->post])->with("status","Comentario Borrado!");
+        return redirect()->route("posts.show", [$comment->post])->with("status", "Comentario Borrado!");
     }
 
-
-    public function vote(Request $request){
+    public function vote(Request $request)
+    {
 
         $id = Input::get('id');
         $type = Input::get("type");
-        $comment = Comment::where("id",$id)->first();
-       
+        $comment = Comment::where("id", $id)->first();
 
-        if($comment->vote($type)){
+        if ($comment->vote($type)) {
             return response()->json([
                 'status' => 'success',
                 'points' => $comment->getPoints(),
             ], 201);
-        } else{
+        } else {
             return response()->json([
-                'status' => 'fail'
+                'status' => 'fail',
             ], 404);
         }
     }

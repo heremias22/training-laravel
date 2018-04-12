@@ -37,10 +37,16 @@ class Post extends Model
     */
    protected $dates = ['deleted_at'];
 
+
+
+    public function comments(){
+        return $this->morphMany('App\Comment', "commentable");
+    }
+    /*
     public function comments(){
         return $this->hasMany(Comment::class);
     }
-    
+    */
 
     public function user(){
         return $this->belongsTo(User::class,"creator_id");
@@ -57,19 +63,6 @@ class Post extends Model
             return false;
         }
     }
-    /*
-    public function upVote(){
-        return $this->votes->where('type',"up");
-    }
-
-    public function downVote(){
-        return $this->votes->where('type',"down");
-    }
-
-    //if the user has voted before
-    public function voteFromUser(User $user){
-        return $this->votes()->where("user_id",$user->id);
-    }*/
 
     public function votes(){
         return $this->morphMany('App\Vote', "voteable");
