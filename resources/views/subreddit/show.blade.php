@@ -75,7 +75,7 @@
                 <ul style='list-style-type: none;'>
                         <form method="POST" action="{{ route("subreddit.add-moderator", [$subreddit]) }}">
                                 @csrf
-                                <input name="username"  />
+                                <input id='userInput' name="username" onchange='searchUser()'  />
                                 <button class='btn-xs btn-success'>request mod</button>
                             </form>
              @foreach($subreddit->moderators as $moderator)
@@ -97,4 +97,26 @@
           </div>
         </div>
       </div>
+<script>
+function searchUser(){
+
+     var url ="{{ route('users.find') }}";
+     var query = $("#userInput").val();
+     console.log(query);
+    $.ajax({
+        dataType: 'json',
+        type:'GET',
+        url: url,
+        data:{q:query},
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+    }).done(function(data) {
+       
+        console.log(data);
+    });
+
+          }
+</script>
+
 @endsection

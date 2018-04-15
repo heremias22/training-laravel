@@ -74,7 +74,7 @@ class RegisterController extends Controller
         ]);
 
         //Afer creating the user send him an email
-       // event(new UserRegistered($user));
+        event(new UserRegistered($user));
             
         return redirect("/home");
     }

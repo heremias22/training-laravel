@@ -61,10 +61,8 @@ class Subreddit extends Model
 
     public function isModerator(User $user){
 
-        return (bool) $this->moderators()->where("user_id",$user->id);
-        
+        return (bool) $this->moderators()->where("user_id",$user->id)->first();
     }
-
 
     public function addModerator($user_id){
         return $this->moderators()->attach($user_id);    

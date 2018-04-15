@@ -26,6 +26,7 @@ class SendWelcomeEmail
      */
     public function handle(UserRegistered $event)
     {
-        //
+        //Mail::to($event->user)->send(new WelcomeEmail($event->user));
+        
     }
 }

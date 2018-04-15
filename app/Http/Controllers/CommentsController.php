@@ -44,10 +44,15 @@ class CommentsController extends Controller
         $this->validate($request, [
             'body' => 'required',
         ]);
-
+        if(isEmpty($request->parent_id)){
+            $parent=null;
+        } else {
+            $parent=$request->parent_id;
+        }
         $comment = new Comment();
         $comment->body = $request->body;
         $comment->creator_id = auth()->user()->id;
+        $comment->parent_id = $parent;
         $post->comments()->save($comment);
         //$this->votes()->save($vote);
 
@@ -89,7 +94,7 @@ class CommentsController extends Controller
         //$subredditSearch = Subreddit::findOrFail($subreddit->id);
         $comment->update($request->all());
 
-        return redirect()->route("posts.show", [$comment->post()])->with("status", "Comentario Actualizado!");
+        return redirect()->route("posts.show", [$comment->post])->with("status", "Comentario Actualizado!");
     }
 
     /**
@@ -121,6 +126,23 @@ class CommentsController extends Controller
                 'status' => 'fail',
             ], 404);
         }
+    }
+
+    public function reply(Request $request, Comment $comment)
+    {
+        //$id = Input::get('post_id');
+        //$post = Post::find($id);
+
+        $this->validate($request, [
+            'body' => 'required',
+        ]);
+
+        $reply = new Comment();
+        $reply->body = $request->body;
+        $reply->creator_id = auth()->user()->id;
+        $reply->parent_id = $comment->id;
+        $comment->comments()->save($reply);
+        return redirect()->back()->with("status", "reply created!");
     }
 
 }

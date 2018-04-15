@@ -17,8 +17,11 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/users/q', 'UsersController@find')
+    ->name('users.find'); 
+
 Route::post('/subreddits/{subreddit}/moderators', 'SubredditModeratorsController@store')
-    ->name('subreddit.add-moderator');
+    ->name('subreddit.add-moderator');   
 Route::delete('/subreddits/{subreddit}/moderators/{user}', 'SubredditModeratorsController@destroy')
     ->name('subreddit.remove-moderator');
 
@@ -33,11 +36,21 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/profile/user/{user}', 'UsersController@getProfile')->name('user.profile');
 Route::get('/subreddits/r/{subreddit}', 'SubredditsController@main')->name('subreddit.main');
 Route::resource('/subreddits', 'SubredditsController');
+
+Route::get('/posts/{post}', function (App\Post $post) {
+    return view('post.show')->with([
+        'post' => $post,
+        'comments' => $post->getPostComments()
+    ]);
+})->name('posts.show');
 Route::get('posts/create/{id}', ['as' => 'post.create', 'uses' => 'PostsController@create']);
 Route::post('/subreddits/comment/vote', 'CommentsController@vote')->name('vote.comment');
-Route::get('comments/create/{id}', ['as' => 'comment.create', 'uses' => 'CommentController@create']);
+
+
+Route::post('comments/{comment}','CommentsController@reply')->name('comments.reply');
+Route::get('comments/create/{id}', ['as' => 'comment.create', 'uses' => 'CommentsController@create']);
 Route::resource('/posts', 'PostsController')->except([
-    'create'
+    'create','show'
 ]);
 Route::resource('/comments', 'CommentsController')->except([
     'create','show'

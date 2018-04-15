@@ -1,34 +1,17 @@
 
     <div class="row">
-            <div class="panel panel-default">
-                    @foreach($post->comments as $comment)
-                    <div class='panel-body' style='border-top:1px solid black;'>
-                        <p style='font-size:1.3em'>{{ $comment->body }}</p>
-                        <p style='font-size:0.8em'>
-                        Submitted <span>{{ $comment->created_at->diffForHumans()}}</span>
-                        by <a href='#'><span>{{ $comment->user->username}}</span></a>
-                        </p>
-                            <a href='#' class='btn-xs btn-danger'>Reply</a>
-                        @if($comment->isOwner(auth()->user()))
-                            <a href='{{ route("comments.edit",[$comment]) }}' class='btn-xs btn-primary'>Edit</a>
-                            <a href='#' onclick="var accept = confirm('Do you wanna delete this comment?');
-                                if(accept)document.getElementById('deleteComment').submit();" 
-                                class='btn-xs btn-danger'>Delete</a>
-                            <form id='deleteComment' method='post' action='{{ route("comments.destroy",[$comment]) }}' style='display:none'>
-                                {{ csrf_field() }}
-                                @method("DELETE")
-                             </form>
-                        @endif
+        @foreach($collection as $comment)
+        
+            
+            @include("comment.comment");
+            
+            @if($comment->replies)
+                @foreach($comment->replies as $comment)
+                    @include("comment.comment");
+                @endforeach
+            @endif
 
-                        <div class='pull-right'>
-                                Points <span class='points_count badge'>{{ $comment->getPoints() }}</span>
-                                    <a href="#" data-type='up' data-id='{{ $comment->id }}' onclick="voteComment(this);" class='btn-xs btn-primary'>Up</a>
-                                    <a href="#" data-type='down' data-id='{{ $comment->id }}' onclick="voteComment(this);" class='btn-xs btn-danger'>Down</a>
-                        </div>     
-
-                    </div>
-                    @endforeach
-            </div>
+        @endforeach
     </div>
     <script>
         
@@ -51,6 +34,18 @@ function voteComment(elemento){
        
         $(elemento).parent().find("span").text(data.points);
     });
+}
+
+function showForm(elemento){
+    var form_id = $(elemento).attr("data-id");
+
+    if($(form_id).css("display")=="none"){
+        $(form_id).show();
+    } else {
+        $(form_id).hide();
     }
+
+   
+}
     </script>
 

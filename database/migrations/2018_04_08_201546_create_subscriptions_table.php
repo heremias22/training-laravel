@@ -20,6 +20,7 @@ class CreateSubscriptionsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('subreddit_id')->unsigned();
             $table->foreign('subreddit_id')->references('id')->on('subreddits');
+            $table->text("extraInfo");
             $table->softDeletes();
             $table->timestamps();
         });

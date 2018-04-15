@@ -3,6 +3,7 @@
 namespace App;
 
 use App\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -42,6 +43,12 @@ class Post extends Model
     public function comments(){
         return $this->morphMany('App\Comment', "commentable");
     }
+
+    public function getPostComments(){
+        return $this->comments()->with('user')->get()->threaded();
+    }
+    
+
     /*
     public function comments(){
         return $this->hasMany(Comment::class);
@@ -57,11 +64,8 @@ class Post extends Model
     }
 
     public function isOwner(User $user){
-        if($this->user->id === $user->id){
-            return True;
-        } else {
-            return false;
-        }
+        return (bool) $this->user()->where("creator_id",$user->id);
+
     }
 
     public function votes(){

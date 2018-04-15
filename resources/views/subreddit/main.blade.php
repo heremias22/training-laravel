@@ -28,6 +28,12 @@
                                 <a href="#" data-type='up' data-id='{{ $post->id }}' onclick="votePost(this);" class='btn-xs btn-primary'>Up</a>
                                 <a href="#" data-type='down' data-id='{{ $post->id }}' onclick="votePost(this);" class='btn-xs btn-danger'>Down</a>
                             </div>
+                           
+                            @if($post->isOwner(auth()->user()) || $post->subreddit->isModerator(auth()->user()))
+                            <a href='{{ route('posts.destroy',[$post]) }}' class='btn-xs btn-primary'>Delete</a>
+                            <a href='' class='btn-xs btn-danger'>Edit</a>
+                            @endif
+
                         </div>
                   
                     </div>
@@ -52,7 +58,13 @@
                     <p>{{ $subreddit->description }}</p>
                     <ul class="list-group">Moderators
                     @foreach($subreddit->moderators as $mod)
-                    <li class="list-group-item list-group-item-danger">{{ $mod->username }}</li>    
+                        @if($mod->id === auth()->user()->id)
+                            <li class="list-group-item list-group-item-danger"><a href='{{ route("users.show",[$mod]) }}'>{{ $mod->username }}</a></li>    
+                        @else
+                            <li class="list-group-item list-group-item-danger"><a href='{{ route("user.profile",[$mod]) }}'>{{ $mod->username }}</a></li>    
+                        @endif
+
+                   
                     @endforeach
                     </ul>
                     <ul class="list-group">Rules
@@ -89,6 +101,59 @@ function votePost(elemento){
        
         $(elemento).parent().find("span").text(data.points);
     });
+}
+
+ function subcribeSubreddit(elemento){
+
+
+
+var url = $(elemento).attr("data-url");
+var subreddit_id = $(elemento).attr("data-id");
+$(elemento).attr('disabled', true);
+
+$.ajax({
+    dataType: 'json',
+    type:'post',
+    url: url,
+    data:{id:subreddit_id},
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+}).done(function(data) {
+   
+        $(elemento).text("unsubcribe");
+        $(elemento).attr("data-url","{{ URL::route('unsubcribe.subreddit') }}");
+        var numero = parseInt($("#sub-count").text())+1;
+        $("#sub-count").text(numero);
+        $(elemento).attr("onClick","unsubscribeSubreddit(this)");
+        $(elemento).attr('disabled', false);
+});
+}
+
+function unsubscribeSubreddit(elemento){
+var url = $(elemento).attr("data-url");
+var subreddit_id = $(elemento).attr("data-id");
+$(elemento).attr('disabled', true);
+
+$.ajax({
+    dataType: 'json',
+    type:'post',
+    url: url,
+    data:{id:subreddit_id},
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+}).done(function(data) {
+
+        $(elemento).text("subcribe");
+        $(elemento).attr("data-url","{{ URL::route('subcribe.subreddit') }}");
+        var numero = parseInt($("#sub-count").text())-1;
+        $("#sub-count").text(numero);
+        $(elemento).attr("onClick","subcribeSubreddit(this)");
+        $(elemento).attr('disabled', false);    
+}).fail(function(data) {
+    alert('failed!');
+});
 }
 
 </script>

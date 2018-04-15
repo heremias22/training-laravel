@@ -54,17 +54,14 @@ class PostsController extends Controller
         return redirect()->route("subreddit.main",[$request->subreddit_id])->with("status","Post created!");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
+    /*
+     @return \Illuminate\Http\Response
+     
     public function show(Post $post)
     {
         return view("post.show", compact("post"));
     }
-
+    */
     /**
      * Show the form for editing the specified resource.
      *

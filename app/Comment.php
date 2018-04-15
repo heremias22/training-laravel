@@ -17,7 +17,7 @@ class Comment extends Model
     * @var array
     */
    protected $fillable = [
-       'body', 'post_id', 'creator_id'
+       'body', 'post_id', 'creator_id','parent_id'
    ];
 
    /**
@@ -44,8 +44,12 @@ class Comment extends Model
    public function comments(){
        return $this->morphMany("App\Comment", "commentable");
    }
+/*
+   public function replies(){
+       return $this->hasMany(Comment::class,"parent_id");
+   }
 
-   /*
+   
    public function post(){
        return $this->belongsTo(Post::class,"post_id");
    }
@@ -103,5 +107,9 @@ class Comment extends Model
             return true;
 
         }      
+    }
+
+    public function newCollection(array $models =[]){
+        return new CommentCollection($models);
     }
 }

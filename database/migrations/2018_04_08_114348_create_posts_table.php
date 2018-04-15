@@ -20,7 +20,7 @@ class CreatePostsTable extends Migration
             $table->integer('subreddit_id')->unsigned();
             $table->foreign('subreddit_id')->references('id')->on('subreddits');
             $table->string('name');
-            $table->string('body');
+            $table->text('body');
             $table->softDeletes();
             $table->timestamps();
         });

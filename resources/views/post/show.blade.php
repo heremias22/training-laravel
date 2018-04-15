@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('content')
@@ -8,15 +9,15 @@
 
             <div class='panel panel-primary'>
                     <div class="panel-heading">
-                        <h3 class='panel-title'><a href="{{ route('posts.show',[$post->id])}}">{{ $post->name }}</a></h3>
+                        <h3 class='panel-title'><a href="">{{ $post->name }}</a></h3>
                     </div>            
                     <div class="panel-body">
                         Submitted <span>{{ $post->updated_at->diffForHumans()}}</span>
                         by <a href='#'><span>{{ $post->user->username}}</span></a>
-                        <a href='{{ route('posts.show',[$post->id])}}'><span class="badge badge-dark">{{ $post->comments->count() }}</span> Comments</a>
+                        <a href=''><span class="badge badge-dark">{{ $post->comments->count() }}</span> Comments</a>
                         <hr>
                         <p style='font-size:1.3em; border:solid 1px grey; padding:8px; border-radius:5px;'>{{ $post->body }}</p>
-                        @if($post->isOwner(auth()->user()))
+                        @if($post->isOwner(auth()->user()) || $post->subreddit->isModerator(auth()->user())))
                         <button class='btn-xs btn-primary'>Delete</button>
                         <button class='btn-xs btn-danger'>Edit</button>
                         @endif
@@ -26,8 +27,18 @@
                                 <a href="#" data-type='down' data-id='{{ $post->id }}' onclick="votePost(this);" class='btn-xs btn-danger'>Down</a>
                         </div>
                     </div>
+                
             </div>
             <hr>
+
+            @include ('comment.index', ['collection' => $comments['root']])
+
+            @if (Auth::check())
+                <h3>leave a reply</h3>
+                
+                @include('comment.create')
+
+            @endif
             <div class='panel panel-primary'>
                 <div class='panel-body'>
                     @include("comment.create")
@@ -44,6 +55,11 @@
                     
         </div>
     </div>
+
+    
+
+
+
 </div>
 <script>
     function votePost(elemento){
