@@ -1,5 +1,6 @@
 <?php
 
+use App\Post;
 use App\User;
 use App\Subreddit;
 use App\Subscription;
@@ -40,5 +41,6 @@ class DatabaseSeeder extends Seeder
             "user_id" => 2,
             "subreddit_id" => 1]);
 
+        factory(App\Post::class,20)->create();
     }
 }

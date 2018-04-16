@@ -19,6 +19,7 @@ class CreateSubredditsTables extends Migration
             $table->foreign('creator_id')->references('id')->on('users');
             $table->string('name');
             $table->string('description');
+            $table->string('slug');
             $table->softDeletes();
             $table->timestamps();
         });

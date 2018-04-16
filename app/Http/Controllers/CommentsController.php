@@ -38,17 +38,19 @@ class CommentsController extends Controller
      */
     public function store(Request $request)
     {
-        $id = Input::get('post_id');
-        $post = Post::find($id);
+        //$id = Input::get('post_id');
+        //$post = Post::find($id);
 
         $this->validate($request, [
             'body' => 'required',
         ]);
-        if(isEmpty($request->parent_id)){
+
+        if(isEmpty($request->parent_id))
             $parent=null;
-        } else {
+         else 
             $parent=$request->parent_id;
-        }
+        
+
         $comment = new Comment();
         $comment->body = $request->body;
         $comment->creator_id = auth()->user()->id;

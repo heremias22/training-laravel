@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Subreddit;
 
 class Post extends Model
 {
@@ -45,15 +46,40 @@ class Post extends Model
     }
 
     public function getPostComments(){
-        return $this->comments()->with('user')->get()->threaded();
+        
+        $postComments = $this->comments->groupBy("parent_id");
+        dd($postComments[''][2]->replies);
+        //$postComments["root"] = $postComments[''];
+        //unset($postComments['']);
+
+        $newComments = $postComments->map(function ($item, $key) use($postComments){
+            foreach($item as $comment){
+                $subComments[$comment->id] = $comment->replies->toArray();
+              
+                return $subComments;
+            }
+            
+        });
+
+        /*
+        $all = collect();
+        $all->push($postComments);
+        $all->push($newComments);
+
+        $all["root"] = $all[0];
+        unset($all[0]);
+        
+        $all["root"] = $all['root'][''];
+        unset($all['root']['']);
+        $all[1] = $all[1][''];
+        dd($all);*/
+        //unset($all[1]['']);
+
+        
+        
+
     }
     
-
-    /*
-    public function comments(){
-        return $this->hasMany(Comment::class);
-    }
-    */
 
     public function user(){
         return $this->belongsTo(User::class,"creator_id");

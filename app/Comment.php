@@ -44,24 +44,26 @@ class Comment extends Model
    public function comments(){
        return $this->morphMany("App\Comment", "commentable");
    }
-/*
+
    public function replies(){
        return $this->hasMany(Comment::class,"parent_id");
    }
 
+  
+/*
    
    public function post(){
        return $this->belongsTo(Post::class,"post_id");
-   }
-    */
-   public function user(){
-       return $this->belongsTo(User::class,"creator_id");
    }
 
    public function isOwner(User $user){
        return ($this->user->id==$user->id);
    }
 
+    */
+   public function user(){
+       return $this->belongsTo(User::class,"creator_id");
+   }
    
    public function votes(){
        return $this->morphMany("App\Vote", "voteable");
@@ -109,7 +111,4 @@ class Comment extends Model
         }      
     }
 
-    public function newCollection(array $models =[]){
-        return new CommentCollection($models);
-    }
 }

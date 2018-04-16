@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Post;
 use App\Subreddit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,7 @@ class SubredditsController extends Controller
      */
     public function index()
     {
-        $subreddits = Subreddit::orderBy("created_at","desc")->get();
+        $subreddits = Subreddit::orderBy("created_at","desc");
         return view("subreddit.index",compact("subreddits"));
     }
 
@@ -56,7 +57,8 @@ class SubredditsController extends Controller
         $subreddit = Subreddit::create([
             'name' => $request->name, 
             'description' => $request->description,
-            'creator_id' => Auth::id()
+            'creator_id' => Auth::id(),
+            'slug' => str_slug($request->name),
         ]);    
     
         return redirect()->route("subreddits.index")->with("status","Subreddit created!");
@@ -109,8 +111,9 @@ class SubredditsController extends Controller
     }
 
     public function main(Subreddit $subreddit){
-        
-        return view("subreddit.main",compact("subreddit"));
+
+        $posts = Post::orderBy("created_at","DESC")->where("subreddit_id",$subreddit->id)->paginate(5);
+        return view("subreddit.main",compact("subreddit","posts"));
     }
 
     

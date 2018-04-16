@@ -5,15 +5,18 @@
     <div class="row">
         <div class="col-md-9 col-md-offset-1">
 
-                @if (session('status'))
+            @if (session('status'))
                 <div class="alert alert-success">
                     {{ session('status') }}
                 </div>
             @endif
+
+            @include("layouts.order")
+
             <div><h2 style='text-align:center;'>{{$subreddit->name}}</h2></div>
             <hr>
             <hr>
-                @foreach($subreddit->posts as $post)
+                @foreach($posts as $post)
                     <div class='panel panel-primary'>
                         <div class="panel-heading">
                             <h3 class='panel-title'><a href="{{ route('posts.show',[$post->id])}}">{{ $post->name }}</a></h3>
@@ -25,13 +28,31 @@
                         <a href='{{ route('posts.show',[$post->id])}}'><span class="badge badge-dark">{{ $post->comments->count() }}</span> Comments</a>
                             <div class='pull-right'>
                             Points <span class='points_count badge'>{{ $post->getPoints() }}</span>
-                                <a href="#" data-type='up' data-id='{{ $post->id }}' onclick="votePost(this);" class='btn-xs btn-primary'>Up</a>
+                            @if(!is_null($post->getVote(auth()->user())))        
+                                @switch($post->getVote(auth()->user())->type)
+                                    @case("up")
+                                        <a href="#" data-type='up' data-id='{{ $post->id }}' onclick="votePost(this);" class='btn-xs btn-success active'>Up</a>
+                                        <a href="#" data-type='down' data-id='{{ $post->id }}' onclick="votePost(this);" class='btn-xs btn-danger'>Down</a>
+                                        @break
+        
+                                    @case("down")
+                                        <a href="#" data-type='up' data-id='{{ $post->id }}' onclick="votePost(this);" class='btn-xs btn-danger'>Up</a>
+                                        <a href="#" data-type='down' data-id='{{ $post->id }}' onclick="votePost(this);" class='btn-xs btn-success active'>Down</a>
+                                        @break
+        
+                                    @default
+                                        <a href="#" data-type='up' data-id='{{ $post->id }}' onclick="votePost(this);" class='btn-xs btn-danger'>Up</a>
+                                        <a href="#" data-type='down' data-id='{{ $post->id }}' onclick="votePost(this);" class='btn-xs btn-danger'>Down</a>
+                                @endswitch
+                            @else
+                                <a href="#" data-type='up' data-id='{{ $post->id }}' onclick="votePost(this);" class='btn-xs btn-danger'>Up</a>
                                 <a href="#" data-type='down' data-id='{{ $post->id }}' onclick="votePost(this);" class='btn-xs btn-danger'>Down</a>
+                            @endif
                             </div>
                            
                             @if($post->isOwner(auth()->user()) || $post->subreddit->isModerator(auth()->user()))
-                            <a href='{{ route('posts.destroy',[$post]) }}' class='btn-xs btn-primary'>Delete</a>
-                            <a href='' class='btn-xs btn-danger'>Edit</a>
+                            <a href='{{ route('posts.destroy',[$post]) }}' class='btn-xs btn-danger'>Delete</a>
+                            <!--<a href='' class='btn-xs btn-danger'>Edit</a>-->
                             @endif
 
                         </div>
@@ -39,16 +60,19 @@
                     </div>
                     <hr>
                 @endforeach
+
+                {{ $posts->links() }}
             </div>
             <div class="col-md-2" style='border:1px solid black'>
                     <hr>
                     @if($subreddit->user->id===auth()->user()->id)
-                        <a class='btn-sm btn-info' href='{{ route("subreddits.show",[$subreddit->id])}}'>Subreddit options</a>
+                        <a class='btn-sm btn-info' href='{{ route("subreddits.show",[$subreddit->name])}}'>Subreddit options</a>
                     @endif
                     <hr>
                     <a class='btn-sm btn-danger' href='{{ route("post.create",['id' => $subreddit->id]) }}'>Submit Post</a>
                     <hr>
                     <span id='sub-count'>{{ $subreddit->subscriptions->count() }}</span> subscribed
+                    
                     @if(auth()->user()->isSubscribedTo($subreddit))
                         <button data-id='{{ $subreddit->id }}' data-url='{{ URL::route('unsubcribe.subreddit') }}' onclick='unsubscribeSubreddit(this);' class='btn-sm btn-info' >Unsubscribe</button>
                     @else
@@ -63,16 +87,12 @@
                         @else
                             <li class="list-group-item list-group-item-danger"><a href='{{ route("user.profile",[$mod]) }}'>{{ $mod->username }}</a></li>    
                         @endif
-
-                   
                     @endforeach
                     </ul>
                     <ul class="list-group">Rules
-                        <li class="list-group-item list-group-item-warning" >1#Rule</li>
-                        <li class="list-group-item list-group-item-warning">2#Rule</li>
-                        <li class="list-group-item list-group-item-warning">3#Rule</li>
-                        <li class="list-group-item list-group-item-warning">4#Rule</li>
-                        <li class="list-group-item list-group-item-warning">5#Rule</li>
+                        <li class="list-group-item list-group-item-warning" >1#Respect</li>
+                        <li class="list-group-item list-group-item-warning">2#No politics</li>
+                        <li class="list-group-item list-group-item-warning">3#No reposts</li>
                     </ul>
             </div>
 
@@ -87,7 +107,11 @@ function votePost(elemento){
     var url ="{{ route('vote.post') }}";
     var type = $(elemento).attr("data-type");
     var post = $(elemento).attr("data-id");
+    var otherButton;
     //$(elemento).attr('disabled', true);
+    if(type=="up")otherButton=$(elemento).next();
+    else if(type=="down")otherButton=$(elemento).prev();
+    
 
     $.ajax({
         dataType: 'json',
@@ -100,6 +124,8 @@ function votePost(elemento){
     }).done(function(data) {
        
         $(elemento).parent().find("span").text(data.points);
+        $(elemento).removeClass("btn-danger").addClass("btn-success");
+        $(otherButton).removeClass("btn-success").addClass("btn-danger");
     });
 }
 
@@ -155,6 +181,10 @@ $.ajax({
     alert('failed!');
 });
 }
+
+
+
+
 
 </script>
 @endsection

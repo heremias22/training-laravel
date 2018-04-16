@@ -3,7 +3,7 @@
             <div class="panel panel-primary">
                 <div class='panel-heading'>Reply to post</div>
                 <div class="panel-body">
-                   
+                   <!-- CHANGE POST ID -->
                     <form class method="POST" action="comments/create/{{ $post->id }}">
                         {{ csrf_field() }}
     

@@ -23,27 +23,26 @@
                         @endif
                         <div class='pull-right'>
                             Points <span class='points_count badge'>{{ $post->getPoints() }}</span>
+
                                 <a href="#" data-type='up' data-id='{{ $post->id }}' onclick="votePost(this);" class='btn-xs btn-primary'>Up</a>
                                 <a href="#" data-type='down' data-id='{{ $post->id }}' onclick="votePost(this);" class='btn-xs btn-danger'>Down</a>
+                           
                         </div>
                     </div>
                 
             </div>
             <hr>
+                <h1>COMMENTS</h1>
+            
+            <!-- INDEX LIST OF COMMENTS WITHOUT PARENT ID -->
+            @include ('comment.index', [ 'comments' => $comments['root']])
 
-            @include ('comment.index', ['collection' => $comments['root']])
-
-            @if (Auth::check())
+            @if (auth()->check())
                 <h3>leave a reply</h3>
                 
-                @include('comment.create')
+                @include('comment.create',["parentId" => $comment->id])
 
             @endif
-            <div class='panel panel-primary'>
-                <div class='panel-body'>
-                    @include("comment.create")
-                </div>
-            </div>
             <hr>
             @if($post->comments->count())
                 <div class='panel panel-primary'>

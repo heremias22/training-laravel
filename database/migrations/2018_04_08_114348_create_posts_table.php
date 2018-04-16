@@ -21,6 +21,7 @@ class CreatePostsTable extends Migration
             $table->foreign('subreddit_id')->references('id')->on('subreddits');
             $table->string('name');
             $table->text('body');
+            $table->string('slug');
             $table->softDeletes();
             $table->timestamps();
         });

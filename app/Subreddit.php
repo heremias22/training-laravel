@@ -2,7 +2,9 @@
 
 namespace App;
 
+use App\Post;
 use App\SubredditModerator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -31,10 +33,10 @@ class Subreddit extends Model
         
     ];
 
-    // public function getRouteKeyName()
-    // {
-    //     return 'name';
-    // }
+    //TODO: Añadir campo slug a tabla base de datos
+    public function getRouteKeyName(){
+        return 'name';
+    }
 
     /**
      * The attributes that should be mutated to dates.
@@ -49,6 +51,28 @@ class Subreddit extends Model
 
     public function posts(){
         return $this->hasMany(Post::class);
+    }
+
+    /*public function fresh(){
+        //Los mas recientes
+        return $this->hasMany(Post::class)->orderBy("created_at","asc");
+    }*/
+
+    public function controversial(){
+        //Posts con mas comentarios
+    }
+
+    public function hot(){
+        //Posts con mas puntos
+        $posts = $this->posts;
+        //dd($posts[2]->getPoints());
+
+        $posts->map(function ($post) {
+            $post['points'] = $post->getPoints();
+            return $post;
+        });
+
+        return $posts;
     }
 
     public function user(){

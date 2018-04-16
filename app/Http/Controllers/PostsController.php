@@ -47,21 +47,52 @@ class PostsController extends Controller
             'name' => $request->name, 
             'body' => $request->body,
             'creator_id' => Auth()->user()->id,
-            'subreddit_id' => $request->subreddit_id
+            'subreddit_id' => $request->subreddit_id,
+            'slug' => str_slug($request->name)
             
         ]);    
     
         return redirect()->route("subreddit.main",[$request->subreddit_id])->with("status","Post created!");
     }
 
-    /*
-     @return \Illuminate\Http\Response
-     
+    
     public function show(Post $post)
     {
-        return view("post.show", compact("post"));
+
+        $comments = $post->getPostComments()->groupBy("parent_id");
+        $comments['root'] = $comments[''];
+        unset($comments['']);
+
+        $subComments = $comments['root'][0]->replies()->get();
+        $comments->push($subComments);
+        //dd($comments);
+        $newArray = [];
+        foreach($comments as $key => $comment){
+            if($key = "root")
+                dd($comment);
+             //$comment->keyBy('')
+            
+        }
+
+      
+        //dd($post->comments->groupBy('parent_id'));
+
+
+        //Root level COMMENTS
+    
+        //Add sub level COMMENTS to ARRAY
+        //dd($comments[''][0]->comments()->get());
+        //foreach($comments as $commentROOT){
+          //  $subComments = $commentROOT->comments();
+
+
+       
+
+        //return $comments;
+
+        return view("post.show", compact("post","comments"));
     }
-    */
+    
     /**
      * Show the form for editing the specified resource.
      *
